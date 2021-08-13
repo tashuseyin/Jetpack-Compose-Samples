@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 import com.example.profilecardlayout.ui.theme.ProfileCardLayoutTheme
 
 class MainActivity : ComponentActivity() {
@@ -67,14 +68,14 @@ fun ProfileCard(userProfile: UserProfile) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            ProfilePicture(userProfile.drawableId, userProfile.status)
+            ProfilePicture(userProfile.pictureUrl, userProfile.status)
             ProfileContent(userProfile.name, userProfile.status)
         }
     }
 }
 
 @Composable
-fun ProfilePicture(drawableId: Int, onlineStatus: Boolean) {
+fun ProfilePicture(pictureUrl: String, onlineStatus: Boolean) {
     Card(
         shape = CircleShape,
         border = BorderStroke(
@@ -89,7 +90,10 @@ fun ProfilePicture(drawableId: Int, onlineStatus: Boolean) {
     ) {
 
         Image(
-            painter = rememberImagePainter(data = drawableId),
+            painter = rememberImagePainter(
+                data = pictureUrl,
+                builder = { transformations(CircleCropTransformation()) },
+            ),
             contentDescription = "image",
             modifier = Modifier.size(72.dp)
         )
